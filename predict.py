@@ -783,11 +783,22 @@ if __name__ == '__main__':
     # final_df
     
     # Filter selected class
+    # species_df = final_df[final_df['label'] == 'WISN']
+    species_df = final_df[final_df['label'] == 'YERA']
+
+    
     
     # Reshape to wide format with one-hot encoding for 'label'
-    wide_df = final_df.pivot_table(index=['start_time', 'end_time', 'filename'],
+    wide_df = species_df.pivot_table(index=['start_time', 'end_time', 'filename'],
                             columns='label', values='score').fillna(0).reset_index()
     
+    out_path = args.input
+    suffix =  out_path.split('/')[-1]
+    today = time.strftime("%Y-%m-%d")
+    csv_file_name = os.path.join(out_path, f'predictions-yera-{suffix}-{today}.csv')
+    wide_df.to_csv(csv_file_name, index = False)
+    
+    #----------------------------------------------------------------------------------------------
     elapsed = time.time() - start_time
     minutes = int(elapsed) // 60
     seconds = int(elapsed) % 60

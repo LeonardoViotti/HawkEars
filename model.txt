@@ -1,0 +1,326 @@
+HighPerfGpuNet(
+  (stem): StemV2(
+    (stem1): ConvBNAct(
+      (conv): Conv2d(1, 24, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (bn): BatchNorm2d(24, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act): ReLU()
+      (lab): Identity()
+    )
+    (stem2a): ConvBNAct(
+      (conv): Conv2d(24, 12, kernel_size=(2, 2), stride=(1, 1), bias=False)
+      (bn): BatchNorm2d(12, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act): ReLU()
+      (lab): Identity()
+    )
+    (stem2b): ConvBNAct(
+      (conv): Conv2d(12, 24, kernel_size=(2, 2), stride=(1, 1), bias=False)
+      (bn): BatchNorm2d(24, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act): ReLU()
+      (lab): Identity()
+    )
+    (stem3): ConvBNAct(
+      (conv): Conv2d(48, 24, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (bn): BatchNorm2d(24, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act): ReLU()
+      (lab): Identity()
+    )
+    (stem4): ConvBNAct(
+      (conv): Conv2d(24, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act): ReLU()
+      (lab): Identity()
+    )
+    (pool): MaxPool2d(kernel_size=2, stride=1, padding=0, dilation=1, ceil_mode=True)
+  )
+  (stages): Sequential(
+    (0): HighPerfGpuStage(
+      (downsample): Identity()
+      (blocks): Sequential(
+        (0): HighPerfGpuBlock(
+          (layers): ModuleList(
+            (0-3): 4 x ConvBNAct(
+              (conv): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (bn): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (act): ReLU()
+              (lab): Identity()
+            )
+          )
+          (aggregation): Sequential(
+            (0): ConvBNAct(
+              (conv): Conv2d(160, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (act): ReLU()
+              (lab): Identity()
+            )
+            (1): ConvBNAct(
+              (conv): Conv2d(32, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (act): ReLU()
+              (lab): Identity()
+            )
+          )
+          (drop_path): Identity()
+        )
+      )
+    )
+    (1): HighPerfGpuStage(
+      (downsample): ConvBNAct(
+        (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=64, bias=False)
+        (bn): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act): Identity()
+        (lab): Identity()
+      )
+      (blocks): Sequential(
+        (0): HighPerfGpuBlock(
+          (layers): ModuleList(
+            (0): ConvBNAct(
+              (conv): Conv2d(64, 48, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (bn): BatchNorm2d(48, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (act): ReLU()
+              (lab): Identity()
+            )
+            (1-3): 3 x ConvBNAct(
+              (conv): Conv2d(48, 48, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (bn): BatchNorm2d(48, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (act): ReLU()
+              (lab): Identity()
+            )
+          )
+          (aggregation): Sequential(
+            (0): ConvBNAct(
+              (conv): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (act): ReLU()
+              (lab): Identity()
+            )
+            (1): ConvBNAct(
+              (conv): Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (act): ReLU()
+              (lab): Identity()
+            )
+          )
+          (drop_path): Identity()
+        )
+      )
+    )
+    (2): HighPerfGpuStage(
+      (downsample): ConvBNAct(
+        (conv): Conv2d(256, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=256, bias=False)
+        (bn): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act): Identity()
+        (lab): Identity()
+      )
+      (blocks): Sequential(
+        (0): HighPerfGpuBlock(
+          (layers): ModuleList(
+            (0): LightConvBNAct(
+              (conv1): ConvBNAct(
+                (conv): Conv2d(256, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (bn): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): Identity()
+                (lab): Identity()
+              )
+              (conv2): ConvBNAct(
+                (conv): Conv2d(96, 96, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=96, bias=False)
+                (bn): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): ReLU()
+                (lab): Identity()
+              )
+            )
+            (1-3): 3 x LightConvBNAct(
+              (conv1): ConvBNAct(
+                (conv): Conv2d(96, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (bn): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): Identity()
+                (lab): Identity()
+              )
+              (conv2): ConvBNAct(
+                (conv): Conv2d(96, 96, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=96, bias=False)
+                (bn): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): ReLU()
+                (lab): Identity()
+              )
+            )
+          )
+          (aggregation): Sequential(
+            (0): ConvBNAct(
+              (conv): Conv2d(640, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (act): ReLU()
+              (lab): Identity()
+            )
+            (1): ConvBNAct(
+              (conv): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (act): ReLU()
+              (lab): Identity()
+            )
+          )
+          (drop_path): Identity()
+        )
+        (1): HighPerfGpuBlock(
+          (layers): ModuleList(
+            (0): LightConvBNAct(
+              (conv1): ConvBNAct(
+                (conv): Conv2d(512, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (bn): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): Identity()
+                (lab): Identity()
+              )
+              (conv2): ConvBNAct(
+                (conv): Conv2d(96, 96, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=96, bias=False)
+                (bn): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): ReLU()
+                (lab): Identity()
+              )
+            )
+            (1-3): 3 x LightConvBNAct(
+              (conv1): ConvBNAct(
+                (conv): Conv2d(96, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (bn): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): Identity()
+                (lab): Identity()
+              )
+              (conv2): ConvBNAct(
+                (conv): Conv2d(96, 96, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=96, bias=False)
+                (bn): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): ReLU()
+                (lab): Identity()
+              )
+            )
+          )
+          (aggregation): Sequential(
+            (0): ConvBNAct(
+              (conv): Conv2d(896, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (act): ReLU()
+              (lab): Identity()
+            )
+            (1): ConvBNAct(
+              (conv): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (act): ReLU()
+              (lab): Identity()
+            )
+          )
+          (drop_path): Identity()
+        )
+        (2): HighPerfGpuBlock(
+          (layers): ModuleList(
+            (0): LightConvBNAct(
+              (conv1): ConvBNAct(
+                (conv): Conv2d(512, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (bn): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): Identity()
+                (lab): Identity()
+              )
+              (conv2): ConvBNAct(
+                (conv): Conv2d(96, 96, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=96, bias=False)
+                (bn): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): ReLU()
+                (lab): Identity()
+              )
+            )
+            (1-3): 3 x LightConvBNAct(
+              (conv1): ConvBNAct(
+                (conv): Conv2d(96, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (bn): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): Identity()
+                (lab): Identity()
+              )
+              (conv2): ConvBNAct(
+                (conv): Conv2d(96, 96, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=96, bias=False)
+                (bn): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): ReLU()
+                (lab): Identity()
+              )
+            )
+          )
+          (aggregation): Sequential(
+            (0): ConvBNAct(
+              (conv): Conv2d(896, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (act): ReLU()
+              (lab): Identity()
+            )
+            (1): ConvBNAct(
+              (conv): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (act): ReLU()
+              (lab): Identity()
+            )
+          )
+          (drop_path): Identity()
+        )
+      )
+    )
+    (3): HighPerfGpuStage(
+      (downsample): ConvBNAct(
+        (conv): Conv2d(512, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=512, bias=False)
+        (bn): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act): Identity()
+        (lab): Identity()
+      )
+      (blocks): Sequential(
+        (0): HighPerfGpuBlock(
+          (layers): ModuleList(
+            (0): LightConvBNAct(
+              (conv1): ConvBNAct(
+                (conv): Conv2d(512, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (bn): BatchNorm2d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): Identity()
+                (lab): Identity()
+              )
+              (conv2): ConvBNAct(
+                (conv): Conv2d(192, 192, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=192, bias=False)
+                (bn): BatchNorm2d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): ReLU()
+                (lab): Identity()
+              )
+            )
+            (1-3): 3 x LightConvBNAct(
+              (conv1): ConvBNAct(
+                (conv): Conv2d(192, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (bn): BatchNorm2d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): Identity()
+                (lab): Identity()
+              )
+              (conv2): ConvBNAct(
+                (conv): Conv2d(192, 192, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=192, bias=False)
+                (bn): BatchNorm2d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): ReLU()
+                (lab): Identity()
+              )
+            )
+          )
+          (aggregation): Sequential(
+            (0): ConvBNAct(
+              (conv): Conv2d(1280, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (act): ReLU()
+              (lab): Identity()
+            )
+            (1): ConvBNAct(
+              (conv): Conv2d(512, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (act): ReLU()
+              (lab): Identity()
+            )
+          )
+          (drop_path): Identity()
+        )
+      )
+    )
+  )
+  (head): ClassifierHead(
+    (global_pool): SelectAdaptivePool2d(pool_type=avg, flatten=Identity())
+    (last_conv): Sequential(
+      (0): Conv2d(1024, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (1): ReLU()
+    )
+    (dropout): Dropout(p=0.0, inplace=False)
+    (flatten): Flatten(start_dim=1, end_dim=-1)
+    (fc): Linear(in_features=2048, out_features=333, bias=True)
+  )
+)

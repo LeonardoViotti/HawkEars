@@ -649,6 +649,8 @@ class Analyzer:
 if __name__ == '__main__':
     # command-line arguments
     parser = argparse.ArgumentParser()
+    parser.add_argument('dataframe', type=str, default='', help="CSV listing files to analyze")
+    
     parser.add_argument('-b', '--band', type=int, default=1 * cfg.infer.use_banding_codes, help=f"If 1, use banding codes labels. If 0, use common names. Default = {1 * cfg.infer.use_banding_codes}.")
     parser.add_argument('-d', '--debug', default=False, action='store_true', help='Flag for debug mode (analyze one spectrogram only, and output several top candidates).')
     parser.add_argument('--embed', default=False, action='store_true', help='If specified, generate a pickle file containing embeddings for each recording processed.')
@@ -722,11 +724,28 @@ if __name__ == '__main__':
     cfg.infer.bpf_start_freq = args.bpfstart
     cfg.infer.bpf_end_freq = args.bpfend
     cfg.infer.bpf_damp = args.bpfdamp
+    #----------------------------------------------------------------------------------------------
 
-    file_list = Analyzer._get_file_list(args.input)
+    # file_list = Analyzer._get_file_list(args.input)
     # file_list = glob.glob('/Users/lviotti/Library/CloudStorage/Dropbox/Work/Kitzes/datasets/yera2023osu/**/*.WAV', recursive = True)
     # file_list = glob.glob(os.path.join(args.input, "**/*.WAV"), recursive = True)
     
+    files_df = pd.read_csv(args.dataframe)
+    
+    file_list = files_df.file
+    
+    # files_df = pd.DataFrame({'file' : file_list})
+    # # files_df['folder'] = 
+    # files_df['file'].str.split('/', expand=True).loc[]
+    
+    # If it does not exist: create df with all files
+    #   Column with processed flag
+    #   Column with folder 
+    # Else: load the existing df
+    # Update file list based on flag
+    
+    
+    #----------------------------------------------------------------------------------------------
     # Initialize the shared Queue (for multiprocessing) or list (for threading) to collect results
     results = mp.Queue() if os.name == "posix" else []
     
@@ -779,6 +798,8 @@ if __name__ == '__main__':
     
     #----------------------------------------------------------------------------------------------
     # Process df
+    
+    # Add conditional for to load if it exists.
     
     # final_df
     

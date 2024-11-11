@@ -6,3 +6,7 @@ logs/*
 test-*
 tools/_*.*
 wildtrax/*
+
+__pycache__/
+**/__pycache__/
+
